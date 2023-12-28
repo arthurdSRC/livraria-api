@@ -1,9 +1,21 @@
 import express from "express"
 import connectDB from "./config/dbConnection.js";
+
 const app = express();
+
 const connection = await connectDB();
+connection.on("error", (error) => { console.log("Erro de conexão", error) })
+connection.once("open", () => {
+  console.log("Conexão com o banco feita com sucesso")
+})
+
+
 app.use(express.json())
 
+const Search = (id) => {
+  const index = livros.findIndex(item => item.id === Number(id));
+  return index;
+}
 // lista de livros estatica para testes
 const livros = [
   { id: 0, nome: "O Hobbit" },
@@ -17,19 +29,10 @@ const livros = [
   { id: 8, nome: "A Revolução dos Bichos" },
   { id: 9, nome: "Crime e Castigo" }
 ];
-
-
-
-const Search = (id) => {
-  const index = livros.findIndex(item => item.id === Number(id));
-  return index;
-}
-
 // lista todos os livros .
 app.get("/livros", (req, res) => {
   return res.json(livros)
 })
-
 // adiciona um novo livro.
 app.post("/livros", (req, res) => {
   const { nome, id } = req.body
@@ -38,7 +41,6 @@ app.post("/livros", (req, res) => {
   livros.push(livro)
   return res.json("Livro registrado com sucesso")
 })
-
 // atualiza livros.
 app.put("/livros/:id", (req, res) => {
   const { id } = req.params;
@@ -49,7 +51,6 @@ app.put("/livros/:id", (req, res) => {
 
   return res.json("Livro atualizado com sucesso")
 })
-
 
 // deleta livros.
 app.delete("/livros/:id", (req, res) => {

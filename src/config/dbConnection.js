@@ -1,7 +1,8 @@
 import mongoose from "mongoose"
+import { env } from "process";
 
 const connectDB = async() => {
-  mongoose.connect("mongodb+srv://admin:admin123@cluster0.lezpoel.mongodb.net/?retryWrites=true&w=majority");
+  mongoose.connect(process.env.DB_CONNECTION_STRING);
   return mongoose.connection
 }
 
