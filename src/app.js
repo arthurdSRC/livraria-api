@@ -1,5 +1,7 @@
 import express from "express"
+import connectDB from "./config/dbConnection.js";
 const app = express();
+const connection = await connectDB();
 app.use(express.json())
 
 // lista de livros estatica para testes
