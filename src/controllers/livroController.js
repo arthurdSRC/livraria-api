@@ -25,15 +25,14 @@ class LivroController {
     }
 
   }
-
   // Criar livro 
   static async criarLivro(req, res) {
 
     const novoLivro = req.body
     try {
-       const autorEncontrado = await autor.findById(novoLivro.autor);
-        const livroCompleto = {...novoLivro , autor:{...autorEncontrado._doc}};
-        const livroCriado = await livro.create(livroCompleto)
+      const autorEncontrado = await autor.findById(novoLivro.autor);
+      const livroCompleto = { ...novoLivro, autor: { ...autorEncontrado._doc } };
+      const livroCriado = await livro.create(livroCompleto)
 
       res.status(201).json({ message: "criado com sucesso", livro: livroCompleto })
 
@@ -68,6 +67,18 @@ class LivroController {
 
   }
 
+  static async buscarEditora(req, res) {
+    const {editora} = req.query
+
+    try {
+      const filter = await livro.find({ editora })
+      res.status(200).json(filter)
+
+    } catch (erro) {
+      res.status(500).json({ message: `${erro.message} - falha ao buscar` })
+    }
+
+  }
 
 }
 
